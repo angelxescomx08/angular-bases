@@ -13,6 +13,10 @@ type Character = {
   styleUrl: './dragon-ball-page.component.css'
 })
 export class DragonBallPageComponent {
+
+  public name = signal("");
+  public power = signal(0);
+
   public characters = signal<Character[]>([
     { id: 1, name: "Goku", power: 100 },
     { id: 2, name: "Vegeta", power: 90 },
@@ -20,4 +24,22 @@ export class DragonBallPageComponent {
     { id: 4, name: "Piccolo", power: 70 },
     { id: 5, name: "Gohan", power: 60 },
   ]);
+
+  convertToNumber(value: string){
+    return Number(value);
+  }
+
+  addCharacter(){
+    if(!this.name() || this.power() <= 0) return;
+
+    const newCharacter: Character = {
+      id: this.characters().length + 1,
+      name: this.name(),
+      power: this.power()
+    }
+
+    this.characters.update(current => [...current, newCharacter]);
+    this.name.set("");
+    this.power.set(0);
+  }
 }
