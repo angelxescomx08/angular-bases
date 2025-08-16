@@ -1,14 +1,11 @@
 import { Component, signal } from '@angular/core';
-
-type Character = {
-  id: number;
-  name: string;
-  power: number;
-}
+import { CharacterListComponent } from '../../components/dragon-ball/character-list/character-list.component';
+import { Character } from '../../types/character.type';
+import { DragonBallCharacterAddComponent } from '../../components/dragon-ball/dragon-ball-character-add/dragon-ball-character-add.component';
 
 @Component({
   selector: 'app-dragon-ball-page',
-  imports: [],
+  imports: [CharacterListComponent, DragonBallCharacterAddComponent],
   templateUrl: './dragon-ball-page.component.html',
   styleUrl: './dragon-ball-page.component.css'
 })
@@ -25,21 +22,12 @@ export class DragonBallPageComponent {
     { id: 5, name: "Gohan", power: 60 },
   ]);
 
-  convertToNumber(value: string){
+  addCharacter(character: Character) {
+    this.characters.update(current => [...current, character]);
+  }
+
+  convertToNumber(value: string) {
     return Number(value);
   }
 
-  addCharacter(){
-    if(!this.name() || this.power() <= 0) return;
-
-    const newCharacter: Character = {
-      id: this.characters().length + 1,
-      name: this.name(),
-      power: this.power()
-    }
-
-    this.characters.update(current => [...current, newCharacter]);
-    this.name.set("");
-    this.power.set(0);
-  }
 }
